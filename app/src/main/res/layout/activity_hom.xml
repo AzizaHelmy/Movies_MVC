@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".HomActivity">
+
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="340dp"
+            android:layout_height="168dp"
+            android:layout_marginTop="80dp"
+            android:src="@drawable/video"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/butt_allMovies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="57dp"
+            android:layout_marginEnd="60dp"
+            android:layout_marginBottom="53dp"
+            android:fontFamily="sans-serif-black"
+            android:padding="13dp"
+            android:text="Movies"
+            android:textSize="21sp"
+            app:layout_constraintEnd_toEndOf="@id/imageView2"
+            app:layout_constraintStart_toStartOf="@id/imageView2"
+            app:layout_constraintTop_toBottomOf="@id/imageView2"
+            tools:layout_editor_absoluteX="158dp"
+            tools:layout_editor_absoluteY="355dp" />
+
+        <Button
+            android:id="@+id/butt_fav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="60dp"
+            android:layout_marginBottom="53dp"
+            android:fontFamily="sans-serif-black"
+            android:padding="13dp"
+            android:text="Favorites"
+            android:textSize="21sp"
+            app:layout_constraintStart_toStartOf="@id/butt_allMovies"
+            app:layout_constraintTop_toBottomOf="@id/butt_allMovies"
+            tools:layout_editor_absoluteX="158dp"
+            tools:layout_editor_absoluteY="450dp" />
+
+        <Button
+            android:id="@+id/butt_exit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="60dp"
+            android:layout_marginBottom="53dp"
+            android:fontFamily="sans-serif-black"
+            android:padding="13dp"
+            android:text="Exit"
+            android:textSize="21sp"
+            app:layout_constraintTop_toBottomOf="@id/butt_fav"
+            tools:layout_editor_absoluteX="57dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
