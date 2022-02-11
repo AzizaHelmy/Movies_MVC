@@ -63,7 +63,7 @@ public class FavMovieActivity extends AppCompatActivity implements OnFavClickLis
         Snackbar snackbar = Snackbar.make(favLayout, "Removed from Fav!", Snackbar.LENGTH_LONG);
         snackbar.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.white));
         snackbar.setActionTextColor(ContextCompat.getColor(getBaseContext(), R.color.red));
-        snackbar.setBackgroundTint(ContextCompat.getColor(getBaseContext(), R.color.purple_500));
+        snackbar.setBackgroundTint(ContextCompat.getColor(getBaseContext(), R.color.gry));
         snackbar.setAction("undo", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
