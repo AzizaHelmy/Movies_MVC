@@ -54,7 +54,7 @@ public class FavMovieAdapter extends RecyclerView.Adapter<FavMovieAdapter.MovieV
         holder.removeFavImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                favClickListener.onFavClick(movie);
+                favClickListener.onFavClick(movie,holder.removeFavImg);
             }
         });
         holder.imgShare.setOnClickListener(new View.OnClickListener() {

@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NetworkDelegate, 
         recyclerView.setLayoutManager(layoutManager);
         movieAdapter = new MovieAdapter(MainActivity.this, movies, this, repository);
     }
+
     @Override
     public void onSuccessResult(List<Movies> movies) {
         recyclerView.setAdapter(movieAdapter);
@@ -61,15 +62,33 @@ public class MainActivity extends AppCompatActivity implements NetworkDelegate, 
     @SuppressLint("ResourceType")
     @Override
     public void onFavClicked(Movies movie, ImageView favImg) {
-        if (favImg.getDrawable().getConstantState() == getResources().getDrawable( R.drawable.ic_baseline_favorite_24).getConstantState()) {
-            Toast.makeText(this, "removed", Toast.LENGTH_LONG).show();
+        if (favImg.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.ic_baseline_favorite_24).getConstantState()) {
             repository.delete(movie);
+            Snackbar snackbar = Snackbar.make(constraintLayout, "Removed from Fav!", Snackbar.LENGTH_LONG);
+            snackbar.setAction("undo", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    repository.insert(movie);
+                    Toast.makeText(MainActivity.this, "added Again!", Toast.LENGTH_SHORT).show();
+                    favImg.setImageResource(R.drawable.ic_baseline_favorite_24);
+                }
+            }).show();
+
         } else {
-            Snackbar.make(constraintLayout, "added to Fav", Snackbar.LENGTH_LONG).show();
+            Snackbar snackbar = Snackbar.make(constraintLayout, "added to Fav", Snackbar.LENGTH_LONG);
             repository.insert(movie);
+            snackbar.setAction("undo", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    repository.delete(movie);
+                    Toast.makeText(MainActivity.this, "Removed Again!", Toast.LENGTH_SHORT).show();
+                    favImg.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+                }
+            }).show();
         }
         movieAdapter.notifyDataSetChanged();
     }
+
     @Override
     public void onShareClicked(Movies movie) {
         Intent intent = new Intent();
