@@ -57,11 +57,13 @@ public class FavMovieActivity extends AppCompatActivity implements OnFavClickLis
 
     @SuppressLint("ResourceAsColor")
     @Override
-    public void onFavClick(Movies movie,ImageView favImg) {
+    public void onFavClick(Movies movie, ImageView favImg) {
         //delet from repo
         repository.delete(movie);
         Snackbar snackbar = Snackbar.make(favLayout, "Removed from Fav!", Snackbar.LENGTH_LONG);
-        snackbar.setBackgroundTint(ContextCompat.getColor(getBaseContext(), R.color.white));
+        snackbar.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.white));
+        snackbar.setActionTextColor(ContextCompat.getColor(getBaseContext(), R.color.red));
+        snackbar.setBackgroundTint(ContextCompat.getColor(getBaseContext(), R.color.purple_500));
         snackbar.setAction("undo", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
