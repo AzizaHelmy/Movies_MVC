@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="#3C3B3B"
+    android:id="@+id/cons"
     tools:context=".allMovies.controller.MainActivity">
     <ImageView
         android:id="@+id/empty_iv"

@@ -1,10 +1,9 @@
 package com.example.iti_mvc.allMovies.view;
 
+
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.nfc.Tag;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.iti_mvc.R;
 import com.example.iti_mvc.db.MovieDAO;
+import com.example.iti_mvc.db.MovieDataBase;
 import com.example.iti_mvc.db.Repository;
 import com.example.iti_mvc.model.Movies;
 
@@ -27,12 +27,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     Context context;
     List<Movies> movies;
     OnClickListener clickListener;
-    boolean flag = false;
+    Repository repository;
+    private MovieDAO movieDAO;
 
-    public MovieAdapter(Context context, List<Movies> movies, OnClickListener clickListener) {
+    public MovieAdapter(Context context, List<Movies> movies, OnClickListener clickListener,Repository repository) {
         this.context = context;
         this.movies = movies;
         this.clickListener = clickListener;
+        this.repository = repository;
+        MovieDataBase dataBase = MovieDataBase.getInstance(context.getApplicationContext());
+        movieDAO = dataBase.movieDAO();
     }
 
     public void setList(List<Movies> updatesMovies) {
@@ -50,16 +54,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
 
         Movies movie = movies.get(position);
-
-        if (movie.isFav()) {
+        if (repository.getFav(movie.getTitle())) {
             holder.imgFav.setImageResource(R.drawable.ic_baseline_favorite_24);
-        }else{
+        } else {
             holder.imgFav.setImageResource(R.drawable.ic_baseline_favorite_border_24);
         }
         holder.tvTitle.setText(movie.getTitle());
         holder.tvYear.setText(movie.getReleaseYear() + "");
         holder.ratingBar.setRating(movie.getRating() / 2);
-        //  holder.tvGener.setText(movie.getGenre().toString());
+          holder.tvGener.setText(movie.getGenre().toString());
         Glide.with(context).load(movie.getImage())
                 .placeholder(R.drawable.holder)
                 .into(holder.imgMovie);
@@ -75,29 +78,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
             @Override
             public void onClick(View view) {
-                // Drawable img= holder.imgFav.getDrawable();
-//                if (!flag) {
-//                    holder.imgFav.setImageResource(R.drawable.ic_baseline_favorite_24);
-//                    flag = true;
-//                    clickListener.onFavClicked(movie);
-//                } else {
-//
-//                    holder.imgFav.setImageResource(R.drawable.ic_baseline_favorite_border_24);
-//                    flag = false;
-//                }
-
-                clickListener.onFavClicked(movie);
+                clickListener.onFavClicked(movie,holder.imgFav);
+                notifyDataSetChanged();
                 //add  this item in db //Noooo Logic Here
             }
         });
     }
-
     //=======================================================
     @Override
     public int getItemCount() {
         return movies.size();
     }
-
     //===========================================================
     public class MovieViewHolder extends RecyclerView.ViewHolder {
         ImageView imgMovie;

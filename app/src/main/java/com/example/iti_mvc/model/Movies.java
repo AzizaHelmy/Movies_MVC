@@ -6,6 +6,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
 
 import java.io.Serializable;
 import java.util.List;
@@ -18,40 +19,19 @@ public class Movies implements Serializable {
     private String image;
     private Float rating;
     private Integer releaseYear;
-    private boolean fav;
-    @Ignore
-    //private List<GenerModel> genre;
     private final static long serialVersionUID = 648610031873363397L;
-    @Ignore
     private List<String> genre = null;
-//    public List<GenerModel> getGenre() {
-//        return genre;
-//    }
-//
-//    public void setGenre(List<GenerModel> genre) {
-//        this.genre = genre;
-//    }
 
-    public Movies(@NonNull String title, String image, Float rating, Integer releaseYear, boolean fav, List<GenerModel> genre) {
+
+    public Movies(@NonNull String title, String image, Float rating, Integer releaseYear, List<String> genre) {
         this.title = title;
         this.image = image;
         this.rating = rating;
         this.releaseYear = releaseYear;
-        this.fav = fav;
-        //this.genre = genre;
+        this.genre = genre;
     }
 
     public Movies() {
-    }
-
-
-
-    public boolean isFav() {
-        return fav;
-    }
-
-    public void setFav(boolean fav) {
-        this.fav = fav;
     }
 
     public String getTitle() {
@@ -86,5 +66,12 @@ public class Movies implements Serializable {
         this.releaseYear = releaseYear;
     }
 
+    public List<String> getGenre() {
+        return genre;
+    }
+
+    public void setGenre(List<String> genre) {
+        this.genre = genre;
+    }
 
 }

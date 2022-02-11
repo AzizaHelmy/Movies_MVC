@@ -28,6 +28,7 @@ public class FavMovieAdapter extends RecyclerView.Adapter<FavMovieAdapter.MovieV
         this.movies = movies;
         this.favClickListener = favClickListener;
     }
+
     public void setList(List<Movies> updatesMovies) {
         this.movies = updatesMovies;
     }
@@ -46,15 +47,13 @@ public class FavMovieAdapter extends RecyclerView.Adapter<FavMovieAdapter.MovieV
         holder.tvTitle.setText(movie.getTitle());
         holder.tvYear.setText(movie.getReleaseYear() + "");
         holder.ratingBar.setRating(movie.getRating() / 2);
-       // holder.tvGener.setText(movie.getGenre().toString());
+        holder.tvGener.setText(movie.getGenre().toString());
         Glide.with(context).load(movie.getImage())
                 .placeholder(R.drawable.holder)
                 .into(holder.imgMovie);
         holder.removeFavImg.setOnClickListener(new View.OnClickListener() {
-            // @SuppressLint("ResourceType")
             @Override
             public void onClick(View view) {
-                // holder.imgFav.setImageResource(R.id.img_fav);
                 favClickListener.onFavClick(movie);
             }
         });
@@ -78,7 +77,6 @@ public class FavMovieAdapter extends RecyclerView.Adapter<FavMovieAdapter.MovieV
     public int getItemCount() {
         return movies.size();
     }
-
 
     //===========================================================
     public class MovieViewHolder extends RecyclerView.ViewHolder {

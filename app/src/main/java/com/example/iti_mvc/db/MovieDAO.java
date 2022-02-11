@@ -25,8 +25,6 @@ public interface MovieDAO {
     LiveData<List<Movies>> getAllFavMovies();
 
     @Query("SELECT EXISTS (SELECT 1 FROM movies WHERE title=:title)")
-    int isFavorite(String title);
+    boolean isFavorite(String title);
 
-    @Query("DELETE FROM movies WHERE title = :title")
-    void deleteByUserId(String title);
 }

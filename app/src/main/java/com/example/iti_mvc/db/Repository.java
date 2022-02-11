@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.iti_mvc.model.Movies;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Repository {
@@ -17,13 +18,13 @@ public class Repository {
         this.context = context;
         MovieDataBase dataBase = MovieDataBase.getInstance(context.getApplicationContext());
         movieDAO = dataBase.movieDAO();
-         storedMovies=movieDAO.getAllFavMovies();
+        storedMovies = movieDAO.getAllFavMovies();
     }
     //======================================================
     public LiveData<List<Movies>> getStoredMovies() {
         return storedMovies;
     }
-    //=============================================
+    //======================================================
     public void insert(Movies movie) {
         System.out.println("in insert");
         new Thread(new Runnable() {
@@ -43,15 +44,35 @@ public class Repository {
             }
         }).start();
     }
+
     //====================================
-    public int isFav(String title) {
-        int res=0;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-             //res=movieDAO.isFavorite(title);
-            }
-        }).start();
-        return res;
+    public boolean getFav(String title) {
+       Fav fav=new Fav();
+       fav.setTitle(title);
+        Thread th=new Thread(fav);
+       th.start();
+        try {
+            th.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return  fav.isFlag();
     }
+
+    public class Fav implements Runnable {
+        private boolean flag=false;
+        private String title;
+
+        @Override
+        public void run() {
+            flag = movieDAO.isFavorite(title);
+        }
+        public void setTitle(String title) {
+            this.title = title;
+        }
+        public boolean isFlag() {
+            return flag;
+        }
+    }
+
 }

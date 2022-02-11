@@ -1,9 +1,12 @@
 package com.example.iti_mvc.allMovies.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +20,7 @@ import com.example.iti_mvc.db.Repository;
 import com.example.iti_mvc.model.Movies;
 import com.example.iti_mvc.network.NetworkDelegate;
 import com.example.iti_mvc.network.RetrofitFactory;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -26,12 +30,13 @@ public class MainActivity extends AppCompatActivity implements NetworkDelegate, 
     List<Movies> movies;
     RetrofitFactory retrofitFactory;
     Repository repository;
-    ImageView imageHolder;
+    ConstraintLayout constraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        constraintLayout = findViewById(R.id.cons);
         retrofitFactory = new RetrofitFactory(this, this);
         repository = new Repository(this);
         movies = retrofitFactory.start();
@@ -39,10 +44,8 @@ public class MainActivity extends AppCompatActivity implements NetworkDelegate, 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
-        movieAdapter = new MovieAdapter(MainActivity.this, movies, this);
-
+        movieAdapter = new MovieAdapter(MainActivity.this, movies, this, repository);
     }
-
     @Override
     public void onSuccessResult(List<Movies> movies) {
         recyclerView.setAdapter(movieAdapter);
@@ -53,21 +56,20 @@ public class MainActivity extends AppCompatActivity implements NetworkDelegate, 
     @Override
     public void onFailureResult(String movies) {
         recyclerView.setVisibility(View.GONE);
-
     }
 
+    @SuppressLint("ResourceType")
     @Override
-    public void onFavClicked(Movies movie) {
-        //add to fav in db
-
-        movie.setFav(true);
-        repository.insert(movie);
-        //repository.insertFav(true);
-        //repository.delete(movie);
-        Toast.makeText(this, "added to Fav", Toast.LENGTH_SHORT).show();
+    public void onFavClicked(Movies movie, ImageView favImg) {
+        if (favImg.getDrawable().getConstantState() == getResources().getDrawable( R.drawable.ic_baseline_favorite_24).getConstantState()) {
+            Toast.makeText(this, "removed", Toast.LENGTH_LONG).show();
+            repository.delete(movie);
+        } else {
+            Snackbar.make(constraintLayout, "added to Fav", Snackbar.LENGTH_LONG).show();
+            repository.insert(movie);
+        }
         movieAdapter.notifyDataSetChanged();
     }
-
     @Override
     public void onShareClicked(Movies movie) {
         Intent intent = new Intent();
@@ -78,9 +80,4 @@ public class MainActivity extends AppCompatActivity implements NetworkDelegate, 
             startActivity(Intent.createChooser(intent, "Share With "));
         }
     }
-
-//    public  boolean isFavourit(){
-//
-//        return
-//    }
 }
